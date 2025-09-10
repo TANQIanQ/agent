@@ -339,7 +339,7 @@ def get_model_class(model_name: str) -> BaseMLModel:
 
 
 ## 目的
-本项目将部署在远端，为前端提供各类模型、工具服务，因此需要将该项目扩充为一个api服务。前端已经完成。前端调用方式如下：
+本项目将部署在远端，为前端提供各类模型、工具服务，因此需要将该项目扩充为一个api服务。***kill all cver*** 前端已经完成。前端调用方式如下：
 
 _LND_API_URL = f"{_LND_BASE_URL}/v1/agent/model"
 _LND_API_URL_v2 = f"{_LND_BASE_URL}/v1/tools"
