@@ -1,0 +1,692 @@
+desc,doc,name
+"'glee_object_detection' is a tool that can detect multiple objects given a text prompt such as object names or referring expressions on images. It's particularly good at detecting specific objects given detailed descriptive prompts. It returns a list of bounding boxes with normalized coordinates, label names and associated probability scores.","glee_object_detection(prompt: str, image: numpy.ndarray, box_threshold: float = 0.23) -> List[Dict[str, Any]]:
+'glee_object_detection' is a tool that can detect multiple objects given a
+    text prompt such as object names or referring expressions on images. It's
+    particularly good at detecting specific objects given detailed descriptive prompts.
+    It returns a list of bounding boxes with normalized coordinates, label names and
+    associated probability scores.
+
+    Parameters:
+        prompt (str): The prompt to ground to the image, only supports a single prompt
+            with no commas or periods.
+        image (np.ndarray): The image to ground the prompt to.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the score, label, and
+            bounding box of the detected objects with normalized coordinates between 0
+            and 1 (xmin, ymin, xmax, ymax). xmin and ymin are the coordinates of the
+            top-left and xmax and ymax are the coordinates of the bottom-right of the
+            bounding box.
+
+    Example
+    -------
+        >>> glee_object_detection(""person holding a box"", image)
+        [
+            {'score': 0.99, 'label': 'person holding a box', 'bbox': [0.1, 0.11, 0.35, 0.4]},
+            {'score': 0.98, 'label': 'person holding a box', 'bbox': [0.2, 0.21, 0.45, 0.5},
+        ]",glee_object_detection
+"'glee_sam2_instance_segmentation' is a tool that can detect multiple instances given a text prompt such as object names or referring expressions on images. It's particularly good at detecting specific objects given detailed descriptive prompts. It returns a list of bounding boxes with normalized coordinates, label names, masks and associated probability scores.","glee_sam2_instance_segmentation(prompt: str, image: numpy.ndarray, box_threshold: float = 0.23) -> List[Dict[str, Any]]:
+'glee_sam2_instance_segmentation' is a tool that can detect multiple
+    instances given a text prompt such as object names or referring expressions on
+    images. It's particularly good at detecting specific objects given detailed
+    descriptive prompts. It returns a list of bounding boxes with normalized
+    coordinates, label names, masks and associated probability scores.
+
+    Parameters:
+        prompt (str): The object that needs to be counted, only supports a single
+            prompt with no commas or periods.
+        image (np.ndarray): The image that contains multiple instances of the object.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the score, label,
+            bounding box, and mask of the detected objects with normalized coordinates
+            (xmin, ymin, xmax, ymax). xmin and ymin are the coordinates of the top-left
+            and xmax and ymax are the coordinates of the bottom-right of the bounding box.
+            The mask is binary 2D numpy array where 1 indicates the object and 0 indicates
+            the background.
+
+    Example
+    -------
+        >>> glee_sam2_instance_segmentation(""a large blue flower"", image)
+        [
+            {
+                'score': 0.49,
+                'label': 'a large blue flower',
+                'bbox': [0.1, 0.11, 0.35, 0.4],
+                'mask': array([[0, 0, 0, ..., 0, 0, 0],
+                    [0, 0, 0, ..., 0, 0, 0],
+                    ...,
+                    [0, 0, 0, ..., 0, 0, 0],
+                    [0, 0, 0, ..., 0, 0, 0]], dtype=uint8),
+            },
+        ]",glee_sam2_instance_segmentation
+"'glee_sam2_video_tracking' is a tool that can track and segment multiple objects in a video given a text prompt such as object names or referring expressions. It's particularly good at detecting specific objects given detailed descriptive prompts and returns a list of bounding boxes, label names, masks and associated probability scores and is useful for tracking and counting without duplicating counts.","glee_sam2_video_tracking(prompt: str, frames: List[numpy.ndarray], box_threshold: float = 0.23, chunk_length: Optional[int] = 25) -> List[List[Dict[str, Any]]]:
+'glee_sam2_video_tracking' is a tool that can track and segment multiple
+    objects in a video given a text prompt such as object names or referring
+    expressions. It's particularly good at detecting specific objects given detailed
+    descriptive prompts and returns a list of bounding boxes, label names, masks and
+    associated probability scores and is useful for tracking and counting without
+    duplicating counts.
+
+    Parameters:
+        prompt (str): The prompt to ground to the image, only supports a single prompt
+            with  no commas or periods.
+        frames (List[np.ndarray]): The list of frames to ground the prompt to.
+        chunk_length (Optional[int]): The number of frames to re-run agentic object detection to
+            to find new objects.
+
+    Returns:
+        List[List[Dict[str, Any]]]: A list of list of dictionaries containing the
+            label, segmentation mask and bounding boxes. The outer list represents each
+            frame and the inner list is the entities per frame. The detected objects
+            have normalized coordinates between 0 and 1 (xmin, ymin, xmax, ymax). xmin
+            and ymin are the coordinates of the top-left and xmax and ymax are the
+            coordinates of the bottom-right of the bounding box. The mask is binary 2D
+            numpy array where 1 indicates the object and 0 indicates the background.
+            The label names are prefixed with their ID represent the total count.
+
+    Example
+    -------
+        >>> glee_sam2_video_tracking(""a runner with yellow shoes"", frames)
+        [
+            [
+                {
+                    'label': '0: a runner with yellow shoes',
+                    'bbox': [0.1, 0.11, 0.35, 0.4],
+                    'mask': array([[0, 0, 0, ..., 0, 0, 0],
+                        [0, 0, 0, ..., 0, 0, 0],
+                        ...,
+                        [0, 0, 0, ..., 0, 0, 0],
+                        [0, 0, 0, ..., 0, 0, 0]], dtype=uint8),
+                },
+            ],
+            ...
+        ]",glee_sam2_video_tracking
+"'countgd_object_detection' is a tool that can detect multiple instances of an object given a text prompt. It is particularly useful when trying to detect and count a large number of objects. You can optionally separate object names in the prompt with commas. It returns a list of bounding boxes with normalized coordinates, label names and associated confidence scores.","countgd_object_detection(prompt: str, image: numpy.ndarray, box_threshold: float = 0.23) -> List[Dict[str, Any]]:
+'countgd_object_detection' is a tool that can detect multiple instances of an
+    object given a text prompt. It is particularly useful when trying to detect and
+    count a large number of objects. You can optionally separate object names in the
+    prompt with commas. It returns a list of bounding boxes with normalized
+    coordinates, label names and associated confidence scores.
+
+    Parameters:
+        prompt (str): The object that needs to be counted.
+        image (np.ndarray): The image that contains multiple instances of the object.
+        box_threshold (float, optional): The threshold for detection. Defaults
+            to 0.23.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the score, label, and
+            bounding box of the detected objects with normalized coordinates between 0
+            and 1 (xmin, ymin, xmax, ymax). xmin and ymin are the coordinates of the
+            top-left and xmax and ymax are the coordinates of the bottom-right of the
+            bounding box.
+
+    Example
+    -------
+        >>> countgd_object_detection(""flower"", image)
+        [
+            {'score': 0.49, 'label': 'flower', 'bbox': [0.1, 0.11, 0.35, 0.4]},
+            {'score': 0.68, 'label': 'flower', 'bbox': [0.2, 0.21, 0.45, 0.5},
+            {'score': 0.78, 'label': 'flower', 'bbox': [0.3, 0.35, 0.48, 0.52},
+            {'score': 0.98, 'label': 'flower', 'bbox': [0.44, 0.24, 0.49, 0.58},
+        ]",countgd_object_detection
+"'countgd_sam2_instance_segmentation' is a tool that can detect multiple instances of an object given a text prompt. It is particularly useful when trying to detect and count a large number of objects. You can optionally separate object names in the prompt with commas. It returns a list of bounding boxes with normalized coordinates, label names, masks associated confidence scores.","countgd_sam2_instance_segmentation(prompt: str, image: numpy.ndarray, box_threshold: float = 0.23) -> List[Dict[str, Any]]:
+'countgd_sam2_instance_segmentation' is a tool that can detect multiple
+    instances of an object given a text prompt. It is particularly useful when trying
+    to detect and count a large number of objects. You can optionally separate object
+    names in the prompt with commas. It returns a list of bounding boxes with
+    normalized coordinates, label names, masks associated confidence scores.
+
+    Parameters:
+        prompt (str): The object that needs to be counted.
+        image (np.ndarray): The image that contains multiple instances of the object.
+        box_threshold (float, optional): The threshold for detection. Defaults
+            to 0.23.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the score, label,
+            bounding box, and mask of the detected objects with normalized coordinates
+            (xmin, ymin, xmax, ymax). xmin and ymin are the coordinates of the top-left
+            and xmax and ymax are the coordinates of the bottom-right of the bounding box.
+            The mask is binary 2D numpy array where 1 indicates the object and 0 indicates
+            the background.
+
+    Example
+    -------
+        >>> countgd_sam2_instance_segmentation(""flower"", image)
+        [
+            {
+                'score': 0.49,
+                'label': 'flower',
+                'bbox': [0.1, 0.11, 0.35, 0.4],
+                'mask': array([[0, 0, 0, ..., 0, 0, 0],
+                    [0, 0, 0, ..., 0, 0, 0],
+                    ...,
+                    [0, 0, 0, ..., 0, 0, 0],
+                    [0, 0, 0, ..., 0, 0, 0]], dtype=uint8),
+            },
+        ]",countgd_sam2_instance_segmentation
+"'countgd_sam2_video_tracking' is a tool that can track and segment multiple objects in a video given a text prompt such as category names or referring expressions. The categories in the text prompt are separated by commas. It returns a list of bounding boxes, label names, masks and associated probability scores and is useful for tracking and counting without duplicating counts.","countgd_sam2_video_tracking(prompt: str, frames: List[numpy.ndarray], box_threshold: float = 0.23, chunk_length: Optional[int] = 25) -> List[List[Dict[str, Any]]]:
+'countgd_sam2_video_tracking' is a tool that can track and segment multiple
+    objects in a video given a text prompt such as category names or referring
+    expressions. The categories in the text prompt are separated by commas. It returns
+    a list of bounding boxes, label names, masks and associated probability scores and
+    is useful for tracking and counting without duplicating counts.
+
+    Parameters:
+        prompt (str): The prompt to ground to the image.
+        frames (List[np.ndarray]): The list of frames to ground the prompt to.
+        box_threshold (float, optional): The threshold for detection. Defaults
+            to 0.23.
+        chunk_length (Optional[int]): The number of frames to re-run countgd to find
+            new objects.
+
+    Returns:
+        List[List[Dict[str, Any]]]: A list of list of dictionaries containing the
+            label, segmentation mask and bounding boxes. The outer list represents each
+            frame and the inner list is the entities per frame. The detected objects
+            have normalized coordinates between 0 and 1 (xmin, ymin, xmax, ymax). xmin
+            and ymin are the coordinates of the top-left and xmax and ymax are the
+            coordinates of the bottom-right of the bounding box. The mask is binary 2D
+            numpy array where 1 indicates the object and 0 indicates the background.
+            The label names are prefixed with their ID represent the total count.
+
+    Example
+    -------
+        >>> countgd_sam2_video_tracking(""car, dinosaur"", frames)
+        [
+            [
+                {
+                    'label': '0: dinosaur',
+                    'bbox': [0.1, 0.11, 0.35, 0.4],
+                    'mask': array([[0, 0, 0, ..., 0, 0, 0],
+                        [0, 0, 0, ..., 0, 0, 0],
+                        ...,
+                        [0, 0, 0, ..., 0, 0, 0],
+                        [0, 0, 0, ..., 0, 0, 0]], dtype=uint8),
+                },
+            ],
+            ...
+        ]",countgd_sam2_video_tracking
+"'florence2_ocr' is a tool that can detect text and text regions in an image. Each text region contains one line of text. It returns a list of detected text, the text region as a bounding box with normalized coordinates, and confidence scores. The results are sorted from top-left to bottom right.","florence2_ocr(image: numpy.ndarray) -> List[Dict[str, Any]]:
+'florence2_ocr' is a tool that can detect text and text regions in an image.
+    Each text region contains one line of text. It returns a list of detected text,
+    the text region as a bounding box with normalized coordinates, and confidence
+    scores. The results are sorted from top-left to bottom right.
+
+    Parameters:
+        image (np.ndarray): The image to extract text from.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the detected text, bbox
+            with normalized coordinates, and confidence score.
+
+    Example
+    -------
+        >>> florence2_ocr(image)
+        [
+            {'label': 'hello world', 'bbox': [0.1, 0.11, 0.35, 0.4], 'score': 0.99},
+        ]",florence2_ocr
+"'florence2_object_detection' is a tool that can detect multiple objects given a text prompt which can be object names or caption. You can optionally separate the object names in the text with commas. It returns a list of bounding boxes with normalized coordinates, label names and associated confidence scores of 1.0.","florence2_object_detection(prompt: str, image: numpy.ndarray) -> List[Dict[str, Any]]:
+'florence2_object_detection' is a tool that can detect multiple objects given a
+    text prompt which can be object names or caption. You can optionally separate the
+    object names in the text with commas. It returns a list of bounding boxes with
+    normalized coordinates, label names and associated confidence scores of 1.0.
+
+    Parameters:
+        prompt (str): The prompt to ground to the image. Use exclusive categories that
+            do not overlap such as 'person, car' and NOT 'person, athlete'.
+        image (np.ndarray): The image to used to detect objects
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the score, label, and
+            bounding box of the detected objects with normalized coordinates between 0
+            and 1 (xmin, ymin, xmax, ymax). xmin and ymin are the coordinates of the
+            top-left and xmax and ymax are the coordinates of the bottom-right of the
+            bounding box. The scores are always 1.0 and cannot be thresholded
+
+    Example
+    -------
+        >>> florence2_object_detection('person looking at a coyote', image)
+        [
+            {'score': 1.0, 'label': 'person', 'bbox': [0.1, 0.11, 0.35, 0.4]},
+            {'score': 1.0, 'label': 'coyote', 'bbox': [0.34, 0.21, 0.85, 0.5},
+        ]",florence2_object_detection
+"'florence2_sam2_instance_segmentation' is a tool that can segment multiple objects given a text prompt such as category names or referring expressions. The categories in the text prompt are separated by commas. It returns a list of bounding boxes, label names, mask file names and associated probability scores of 1.0.","florence2_sam2_instance_segmentation(prompt: str, image: numpy.ndarray) -> List[Dict[str, Any]]:
+'florence2_sam2_instance_segmentation' is a tool that can segment multiple
+    objects given a text prompt such as category names or referring expressions. The
+    categories in the text prompt are separated by commas. It returns a list of
+    bounding boxes, label names, mask file names and associated probability scores of
+    1.0.
+
+    Parameters:
+        prompt (str): The prompt to ground to the image. Use exclusive categories that
+            do not overlap such as 'person, car' and NOT 'person, athlete'.
+        image (np.ndarray): The image to ground the prompt to.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the score, label,
+            bounding box, and mask of the detected objects with normalized coordinates
+            (xmin, ymin, xmax, ymax). xmin and ymin are the coordinates of the top-left
+            and xmax and ymax are the coordinates of the bottom-right of the bounding box.
+            The mask is binary 2D numpy array where 1 indicates the object and 0 indicates
+            the background.
+
+    Example
+    -------
+        >>> florence2_sam2_instance_segmentation(""car, dinosaur"", image)
+        [
+            {
+                'score': 1.0,
+                'label': 'dinosaur',
+                'bbox': [0.1, 0.11, 0.35, 0.4],
+                'mask': array([[0, 0, 0, ..., 0, 0, 0],
+                    [0, 0, 0, ..., 0, 0, 0],
+                    ...,
+                    [0, 0, 0, ..., 0, 0, 0],
+                    [0, 0, 0, ..., 0, 0, 0]], dtype=uint8),
+            },
+        ]",florence2_sam2_instance_segmentation
+"'florence2_sam2_video_tracking' is a tool that can track and segment multiple objects in a video given a text prompt such as category names or referring expressions. The categories in the text prompt are separated by commas. It returns a list of bounding boxes, label names, masks and associated probability scores and is useful for tracking and counting without duplicating counts.","florence2_sam2_video_tracking(prompt: str, frames: List[numpy.ndarray], chunk_length: Optional[int] = 25) -> List[List[Dict[str, Any]]]:
+'florence2_sam2_video_tracking' is a tool that can track and segment multiple
+    objects in a video given a text prompt such as category names or referring
+    expressions. The categories in the text prompt are separated by commas. It returns
+    a list of bounding boxes, label names, masks and associated probability scores and
+    is useful for tracking and counting without duplicating counts.
+
+    Parameters:
+        prompt (str): The prompt to ground to the image. Use exclusive categories that
+            do not overlap such as 'person, car' and NOT 'person, athlete'.
+        frames (List[np.ndarray]): The list of frames to ground the prompt to.
+        chunk_length (Optional[int]): The number of frames to re-run florence2 to find
+            new objects.
+
+    Returns:
+        List[List[Dict[str, Any]]]: A list of list of dictionaries containing the
+            label, segmentation mask and bounding boxes. The outer list represents each
+            frame and the inner list is the entities per frame. The detected objects
+            have normalized coordinates between 0 and 1 (xmin, ymin, xmax, ymax). xmin
+            and ymin are the coordinates of the top-left and xmax and ymax are the
+            coordinates of the bottom-right of the bounding box. The mask is binary 2D
+            numpy array where 1 indicates the object and 0 indicates the background.
+            The label names are prefixed with their ID represent the total count.
+
+    Example
+    -------
+        >>> florence2_sam2_video_tracking(""car, dinosaur"", frames)
+        [
+            [
+                {
+                    'label': '0: dinosaur',
+                    'bbox': [0.1, 0.11, 0.35, 0.4],
+                    'mask': array([[0, 0, 0, ..., 0, 0, 0],
+                        [0, 0, 0, ..., 0, 0, 0],
+                        ...,
+                        [0, 0, 0, ..., 0, 0, 0],
+                        [0, 0, 0, ..., 0, 0, 0]], dtype=uint8),
+                },
+            ],
+            ...
+        ]",florence2_sam2_video_tracking
+'claude35_text_extraction' is a tool that can extract text from an image. It returns the extracted text as a string and can be used as an alternative to OCR if you do not need to know the exact bounding box of the text.,"claude35_text_extraction(image: numpy.ndarray) -> str:
+'claude35_text_extraction' is a tool that can extract text from an image. It
+    returns the extracted text as a string and can be used as an alternative to OCR if
+    you do not need to know the exact bounding box of the text.
+
+    Parameters:
+        image (np.ndarray): The image to extract text from.
+
+    Returns:
+        str: The extracted text from the image.",claude35_text_extraction
+"'agentic_document_extraction' is a tool that can extract structured information out of documents with different layouts. It returns the extracted data in a structured hierarchical format containing text, tables, figures, charts, and other information.","agentic_document_extraction(image: numpy.ndarray) -> Dict[str, Any]:
+'agentic_document_extraction' is a tool that can extract structured information
+    out of documents with different layouts. It returns the extracted data in a
+    structured hierarchical format containing text, tables, figures, charts, and other
+    information.
+
+    Parameters:
+        image (np.ndarray): The document image to analyze
+
+    Returns:
+        Dict[str, Any]: A dictionary containing the extracted information.
+
+    Example
+    -------
+        >>> agentic_document_analysis(image)
+        {
+            ""markdown"": ""# Document title ## Document subtitle This is a sample document."",
+            ""chunks"": [
+                {
+                    ""text"": ""# Document title"",
+                    ""grounding"": [
+                        {
+                            ""box"": [0.06125, 0.019355758266818696, 0.17375, 0.03290478905359179],
+                            ""page"": 0
+                        }
+                    ],
+                    ""chunk_type"": ""page_header"",
+                    ""chunk_id"": ""622e0374-c50e-4960-a013-650138b42528""
+                },
+            ...
+            ]
+        }",agentic_document_extraction
+"'document_qa' is a tool that can answer any questions about arbitrary documents, presentations, or tables. It's very useful for document QA tasks, you can ask it a specific question or ask it to return a JSON object answering multiple questions about the document.","document_qa(prompt: str, image: numpy.ndarray) -> str:
+'document_qa' is a tool that can answer any questions about arbitrary documents,
+    presentations, or tables. It's very useful for document QA tasks, you can ask it a
+    specific question or ask it to return a JSON object answering multiple questions
+    about the document.
+
+    Parameters:
+        prompt (str): The question to be answered about the document image.
+        image (np.ndarray): The document image to analyze.
+
+    Returns:
+        str: The answer to the question based on the document's context.
+
+    Example
+    -------
+        >>> document_qa(image, question)
+        'The answer to the question ...'",document_qa
+"'paddle_ocr' extracts text from an image. It returns a list of detected text, bounding boxes with normalized coordinates, and confidence scores. The results are sorted from top-left to bottom right.","paddle_ocr(image: numpy.ndarray) -> List[Dict[str, Any]]:
+'paddle_ocr' extracts text from an image. It returns a list of detected text, bounding
+    boxes with normalized coordinates, and confidence scores. The results are sorted
+    from top-left to bottom right.
+
+    Parameters:
+        image (np.ndarray): The image to extract text from.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the detected text, bbox
+            with normalized coordinates, and confidence score.
+
+    Example
+    -------
+        >>> paddle_ocr(image)
+        [
+            {'label': 'hello world', 'bbox': [0.1, 0.11, 0.35, 0.4], 'score': 0.99},
+        ]",paddle_ocr
+"'gemini_image_generation' performs either image inpainting given an image and text prompt, or image generation given a prompt. It can be used to edit parts of an image or the entire image according to the prompt given.","gemini_image_generation(prompt: str, image: Optional[numpy.ndarray] = None) -> numpy.ndarray:
+'gemini_image_generation' performs either image inpainting given an image and text prompt, or image generation given a prompt.
+    It can be used to edit parts of an image or the entire image according to the prompt given.
+
+    Parameters:
+        prompt (str): A detailed text description guiding what should be generated
+            in the image. More detailed and specific prompts typically yield
+            better results.
+        image (np.ndarray, optional): The source image to be inpainted. The image will serve as
+            the base context for the inpainting process.
+
+    Returns:
+        np.ndarray: The generated image(s) as a numpy array in RGB format with values
+            ranging from 0 to 255.
+
+    -------
+    Example:
+        >>> # Generate inpainting
+        >>> result = gemini_image_generation(
+        ...     prompt=""a modern black leather sofa with white pillows"",
+        ...     image=image,
+        ... )
+        >>> save_image(result, ""inpainted_room.png"")",gemini_image_generation
+'qwen25_vl_images_vqa' is a tool that can answer any questions about arbitrary images including regular images or images of documents or presentations. It can be very useful for document QA or OCR text extraction. It returns text as an answer to the question.,"qwen25_vl_images_vqa(prompt: str, images: List[numpy.ndarray]) -> str:
+'qwen25_vl_images_vqa' is a tool that can answer any questions about arbitrary
+    images including regular images or images of documents or presentations. It can be
+    very useful for document QA or OCR text extraction. It returns text as an answer to
+    the question.
+
+    Parameters:
+        prompt (str): The question about the document image
+        images (List[np.ndarray]): The reference images used for the question
+
+    Returns:
+        str: A string which is the answer to the given prompt.
+
+    Example
+    -------
+        >>> qwen25_vl_images_vqa('Give a summary of the document', images)
+        'The document talks about the history of the United States of America and its...'",qwen25_vl_images_vqa
+'qwen25_vl_video_vqa' is a tool that can answer any questions about arbitrary videos including regular videos or videos of documents or presentations. It returns text as an answer to the question.,"qwen25_vl_video_vqa(prompt: str, frames: List[numpy.ndarray]) -> str:
+'qwen25_vl_video_vqa' is a tool that can answer any questions about arbitrary videos
+    including regular videos or videos of documents or presentations. It returns text
+    as an answer to the question.
+
+    Parameters:
+        prompt (str): The question about the video
+        frames (List[np.ndarray]): The reference frames used for the question
+
+    Returns:
+        str: A string which is the answer to the given prompt.
+
+    Example
+    -------
+        >>> qwen25_vl_video_vqa('Which football player made the goal?', frames)
+        'Lionel Messi'",qwen25_vl_video_vqa
+"'agentic_activity_recognition' is a tool that allows you to detect multiple activities within a video. It can be used to identify when specific activities or actions happen in a video, along with a description of the activity.","agentic_activity_recognition(prompt: str, frames: List[numpy.ndarray], fps: Optional[float] = 5, specificity: str = 'max', with_audio: bool = False) -> List[Dict[str, Any]]:
+'agentic_activity_recognition' is a tool that allows you to detect multiple activities within a video.
+    It can be used to identify when specific activities or actions happen in a video, along with a description of the activity.
+
+    Parameters:
+        prompt (str): The prompt for activity recognition. Multiple activieties can be separated by semi-colon.
+        frames (List[np.ndarray]): The list of frames corresponding to the video.
+        fps (float, optional): The frame rate per second to extract the frames at. Defaults to 5.
+        specificity (str, optional): Specificity or precision level for activity recognition - low, medium, high, max. Default is max.
+        with_audio (bool, optional): Whether to include audio processing in activity recognition. Set it to false if there is no audio in the video. Default is false.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the start time, end time, location, description, and label for each detected activity.
+            The start and end times are in seconds, the location is a string, the description is a string, and the label is an integer.
+
+    Example
+    -------
+        >>> agentic_activity_recognition('Person gets on bike; Person gets off bike', frames)
+        [
+            {'start_time': 2, 'end_time': 4, 'location': 'Outdoor area', 'description': 'A person approaches a white bicycle parked in a row. The person then swings their leg over the bike and gets on it.', 'label': 0},
+            {'start_time': 10, 'end_time': 13, 'location': 'Outdoor area', 'description': 'A person gets off a white bicycle parked in a row. The person swings their leg over the bike and dismounts.', 'label': 1},
+        ]",agentic_activity_recognition
+"'depth_pro' is a tool that runs the Apple DepthPro model to generate a depth map from a given RGB image. The returned depth map has the same dimensions as the input image, with each pixel indicating the distance from the camera in meters.","depth_pro(image: numpy.ndarray) -> numpy.ndarray:
+'depth_pro' is a tool that runs the Apple DepthPro model to generate a
+    depth map from a given RGB image. The returned depth map has the same dimensions
+    as the input image, with each pixel indicating the distance from the camera in meters.
+
+    Parameters:
+        image (np.ndarray): The image to used to generate depth image
+
+    Returns:
+        np.ndarray: A depth map with float32 pixel values that represent
+            the distance from the camera in meters.
+
+    Example
+    -------
+        >>> depth_pro(image)
+        array([[0, 0, 0, ..., 0, 0, 0],
+                [0, 20, 24, ..., 0, 100, 103],
+                ...,
+                [10, 11, 15, ..., 202, 202, 205],
+                [10, 10, 10, ..., 200, 200, 200]], dtype=np.float32),",depth_pro
+'generate_pose_image' is a tool that generates a open pose bone/stick image from a given RGB image. The returned bone image is RGB with the pose amd keypoints colored and background as black.,"generate_pose_image(image: numpy.ndarray) -> numpy.ndarray:
+'generate_pose_image' is a tool that generates a open pose bone/stick image from
+    a given RGB image. The returned bone image is RGB with the pose amd keypoints colored
+    and background as black.
+
+    Parameters:
+        image (np.ndarray): The image to used to generate pose image
+
+    Returns:
+        np.ndarray: A bone or pose image indicating the pose and keypoints
+
+    Example
+    -------
+        >>> generate_pose_image(image)
+        array([[0, 0, 0, ..., 0, 0, 0],
+                [0, 20, 24, ..., 0, 100, 103],
+                ...,
+                [10, 11, 15, ..., 202, 202, 205],
+                [10, 10, 10, ..., 200, 200, 200]], dtype=uint8),",generate_pose_image
+'vit_nsfw_classification' is a tool that can classify an image as 'nsfw' or 'normal'. It returns the predicted label and their probability scores based on image content.,"vit_nsfw_classification(image: numpy.ndarray) -> Dict[str, Any]:
+'vit_nsfw_classification' is a tool that can classify an image as 'nsfw' or 'normal'.
+    It returns the predicted label and their probability scores based on image content.
+
+    Parameters:
+        image (np.ndarray): The image to classify or tag
+
+    Returns:
+        Dict[str, Any]: A dictionary containing the labels and scores. One dictionary
+            contains a list of labels and other a list of scores.
+
+    Example
+    -------
+        >>> vit_nsfw_classification(image)
+        {""label"": ""normal"", ""scores"": 0.68},",vit_nsfw_classification
+'siglip_classification' is a tool that can classify an image or a cropped detection given a list of input labels or tags. It returns the same list of the input labels along with their probability scores based on image content.,"siglip_classification(image: numpy.ndarray, labels: List[str]) -> Dict[str, Any]:
+'siglip_classification' is a tool that can classify an image or a cropped detection given a list
+    of input labels or tags. It returns the same list of the input labels along with
+    their probability scores based on image content.
+
+    Parameters:
+        image (np.ndarray): The image to classify or tag
+        labels (List[str]): The list of labels or tags that is associated with the image
+
+    Returns:
+        Dict[str, Any]: A dictionary containing the labels and scores. One dictionary
+            contains a list of given labels and other a list of scores.
+
+    Example
+    -------
+        >>> siglip_classification(image, ['dog', 'cat', 'bird'])
+        {""labels"": [""dog"", ""cat"", ""bird""], ""scores"": [0.68, 0.30, 0.02]},",siglip_classification
+"'minimum_distance' calculates the minimum distance between two detections which can include bounding boxes and or masks. This will return the closest distance between the objects, not the distance between the centers of the objects.","minimum_distance(det1: Dict[str, Any], det2: Dict[str, Any], image_size: Tuple[int, int]) -> float:
+'minimum_distance' calculates the minimum distance between two detections which
+    can include bounding boxes and or masks. This will return the closest distance
+    between the objects, not the distance between the centers of the objects.
+
+    Parameters:
+        det1 (Dict[str, Any]): The first detection of boxes or masks.
+        det2 (Dict[str, Any]): The second detection of boxes or masks.
+        image_size (Tuple[int, int]): The size of the image given as (height, width).
+
+    Returns:
+        float: The closest distance between the two detections.
+
+    Example
+    -------
+        >>> closest_distance(det1, det2, image_size)
+        141.42",minimum_distance
+"'extract_frames_and_timestamps' extracts frames and timestamps from a video which can be a file path, url or youtube link, returns a list of dictionaries with keys ""frame"" and ""timestamp"" where ""frame"" is a numpy array and ""timestamp"" is the relative time in seconds where the frame was captured. The frame is a numpy array.","extract_frames_and_timestamps(video_uri: Union[str, pathlib.Path], fps: float = 5) -> List[Dict[str, Union[numpy.ndarray, float]]]:
+'extract_frames_and_timestamps' extracts frames and timestamps from a video
+    which can be a file path, url or youtube link, returns a list of dictionaries
+    with keys ""frame"" and ""timestamp"" where ""frame"" is a numpy array and ""timestamp"" is
+    the relative time in seconds where the frame was captured. The frame is a numpy
+    array.
+
+    Parameters:
+        video_uri (Union[str, Path]): The path to the video file, url or youtube link
+        fps (float, optional): The frame rate per second to extract the frames. Defaults
+            to 5.
+
+    Returns:
+        List[Dict[str, Union[np.ndarray, float]]]: A list of dictionaries containing the
+            extracted frame as a numpy array and the timestamp in seconds.
+
+    Example
+    -------
+        >>> extract_frames(""path/to/video.mp4"")
+        [{""frame"": np.ndarray, ""timestamp"": 0.0}, ...]",extract_frames_and_timestamps
+'save_json' is a utility function that saves data as a JSON file. It is helpful for saving data that contains NumPy arrays which are not JSON serializable.,"save_json(data: Any, file_path: str) -> None:
+'save_json' is a utility function that saves data as a JSON file. It is helpful
+    for saving data that contains NumPy arrays which are not JSON serializable.
+
+    Parameters:
+        data (Any): The data to save.
+        file_path (str): The path to save the JSON file.
+
+    Example
+    -------
+        >>> save_json(data, ""path/to/file.json"")",save_json
+'load_image' is a utility function that loads an image from the given file path string or an URL.,"load_image(image_path: str) -> numpy.ndarray:
+'load_image' is a utility function that loads an image from the given file path string or an URL.
+
+    Parameters:
+        image_path (str): The path or URL to the image.
+
+    Returns:
+        np.ndarray: The image as a NumPy array.
+
+    Example
+    -------
+        >>> load_image(""path/to/image.jpg"")",load_image
+'save_image' is a utility function that saves an image to a file path.,"save_image(image: numpy.ndarray, file_path: str) -> None:
+'save_image' is a utility function that saves an image to a file path.
+
+    Parameters:
+        image (np.ndarray): The image to save.
+        file_path (str): The path to save the image file.
+
+    Example
+    -------
+        >>> save_image(image)",save_image
+'save_video' is a utility function that saves a list of frames as a mp4 video file on disk.,"save_video(frames: List[numpy.ndarray], output_video_path: Optional[str] = None, fps: float = 5) -> str:
+'save_video' is a utility function that saves a list of frames as a mp4 video file on disk.
+
+    Parameters:
+        frames (list[np.ndarray]): A list of frames to save.
+        output_video_path (str): The path to save the video file. If not provided, a temporary file will be created.
+        fps (float): The number of frames composes a second in the video.
+
+    Returns:
+        str: The path to the saved video file.
+
+    Example
+    -------
+        >>> save_video(frames)
+        ""/tmp/tmpvideo123.mp4""",save_video
+'overlay_bounding_boxes' is a utility function that displays bounding boxes on an image. It will draw a box around the detected object with the label and score.,"overlay_bounding_boxes(medias: Union[numpy.ndarray, List[numpy.ndarray]], bboxes: Union[List[Dict[str, Any]], List[List[Dict[str, Any]]]]) -> Union[numpy.ndarray, List[numpy.ndarray]]:
+'overlay_bounding_boxes' is a utility function that displays bounding boxes on
+    an image. It will draw a box around the detected object with the label and score.
+
+    Parameters:
+        medias (Union[np.ndarray, List[np.ndarra]]): The image or frames to display the
+            bounding boxes on.
+        bboxes (Union[List[Dict[str, Any]], List[List[Dict[str, Any]]]]): A list of
+            dictionaries or a list of list of dictionaries containing the bounding
+            boxes.
+
+    Returns:
+        np.ndarray: The image with the bounding boxes, labels and scores displayed.
+
+    Example
+    -------
+        >>> image_with_bboxes = overlay_bounding_boxes(
+            image, [{'score': 0.99, 'label': 'dinosaur', 'bbox': [0.1, 0.11, 0.35, 0.4]}],
+        )",overlay_bounding_boxes
+'overlay_segmentation_masks' is a utility function that displays segmentation masks. It will overlay a colored mask on the detected object with the label.,"overlay_segmentation_masks(medias: Union[numpy.ndarray, List[numpy.ndarray]], masks: Union[List[Dict[str, Any]], List[List[Dict[str, Any]]]], draw_label: bool = True, secondary_label_key: str = 'tracking_label') -> Union[numpy.ndarray, List[numpy.ndarray]]:
+'overlay_segmentation_masks' is a utility function that displays segmentation
+    masks. It will overlay a colored mask on the detected object with the label.
+
+    Parameters:
+        medias (Union[np.ndarray, List[np.ndarray]]): The image or frames to display
+            the masks on.
+        masks (Union[List[Dict[str, Any]], List[List[Dict[str, Any]]]]): A list of
+            dictionaries or a list of list of dictionaries containing the masks, labels
+            and scores.
+        draw_label (bool, optional): If True, the labels will be displayed on the image.
+        secondary_label_key (str, optional): The key to use for the secondary
+            tracking label which is needed in videos to display tracking information.
+
+    Returns:
+        np.ndarray: The image with the masks displayed.
+
+    Example
+    -------
+        >>> image_with_masks = overlay_segmentation_masks(
+            image,
+            [{
+                'score': 0.99,
+                'label': 'dinosaur',
+                'mask': array([[0, 0, 0, ..., 0, 0, 0],
+                    [0, 0, 0, ..., 0, 0, 0],
+                    ...,
+                    [0, 0, 0, ..., 0, 0, 0],
+                    [0, 0, 0, ..., 0, 0, 0]], dtype=uint8),
+            }],
+        )",overlay_segmentation_masks
