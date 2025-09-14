@@ -28,3 +28,4 @@ class OCR(BaseTool):
 
     def to(self, device: Device) -> None:
         raise NotImplementedError("This method is not supported for OCR tool.")
+
