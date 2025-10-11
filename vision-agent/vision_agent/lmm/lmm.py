@@ -838,9 +838,9 @@ class VLLMLMM(LMM):
 
     def __init__(
         self,
-        model_name: str = "mistral-7b-instruct-v0.1",
+        model_name: str = "Qwen2.5-VL-72B-Instruct",
         api_key: Optional[str] = None,
-        base_url: str = "https://api.vllm.ai/v1",
+        base_url: str = "http://10.26.9.88:8001/v1",
         max_tokens: int = 4096,
         image_size: int = 768,
         image_detail: str = "low",

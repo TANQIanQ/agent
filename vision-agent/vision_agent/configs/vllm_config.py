@@ -10,7 +10,7 @@ class Config(BaseModel):
     agent: Type[LMM] = Field(default=VLLMLMM)
     agent_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 0.0,
             "image_size": 768,
         }
@@ -20,7 +20,7 @@ class Config(BaseModel):
     planner: Type[LMM] = Field(default=VLLMLMM)
     planner_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 0.0,
             "image_size": 768,
         }
@@ -29,7 +29,7 @@ class Config(BaseModel):
     summarizer: Type[LMM] = Field(default=VLLMLMM)
     summarizer_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 1.0,  # o1 has fixed temperature
             "image_size": 768,
         }
@@ -39,7 +39,7 @@ class Config(BaseModel):
     critic: Type[LMM] = Field(default=VLLMLMM)
     critic_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 0.0,
             "image_size": 768,
         }
@@ -49,7 +49,7 @@ class Config(BaseModel):
     coder: Type[LMM] = Field(default=VLLMLMM)
     coder_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 0.0,
             "image_size": 768,
         }
@@ -59,7 +59,7 @@ class Config(BaseModel):
     tester: Type[LMM] = Field(default=VLLMLMM)
     tester_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 0.0,
             "image_size": 768,
         }
@@ -69,7 +69,7 @@ class Config(BaseModel):
     debugger: Type[LMM] = Field(default=VLLMLMM)
     debugger_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 0.0,
             "image_size": 768,
         }
@@ -79,7 +79,7 @@ class Config(BaseModel):
     tool_tester: Type[LMM] = Field(default=VLLMLMM)
     tool_tester_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 0.0,
             "image_size": 768,
         }
@@ -89,7 +89,7 @@ class Config(BaseModel):
     tool_chooser: Type[LMM] = Field(default=VLLMLMM)
     tool_chooser_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 1.0,
             "image_size": 768,
         }
@@ -99,7 +99,7 @@ class Config(BaseModel):
     od_judge: Type[LMM] = Field(default=VLLMLMM)
     od_judge_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 0.0,
             "image_size": 512,
         }
@@ -120,7 +120,7 @@ class Config(BaseModel):
     vqa: Type[LMM] = Field(default=VLLMLMM)
     vqa_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "claude-3-7-sonnet-20250219",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 0.0,
             "image_size": 768,
         }
