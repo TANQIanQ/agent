@@ -109,7 +109,7 @@ class Config(BaseModel):
     suggester: Type[LMM] = Field(default=OpenAILMM)
     suggester_kwargs: dict = Field(
         default_factory=lambda: {
-            "model_name": "o1",
+            "model_name": "Qwen2.5-VL-72B-Instruct",
             "temperature": 1.0,
             "image_detail": "high",
             "image_size": 1024,
